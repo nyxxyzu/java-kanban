@@ -27,6 +27,9 @@ public class Main {
         manager.getAllTasks().forEach(System.out::println);
         manager.getAllEpics().forEach(System.out::println);
         manager.getAllSubtasks().forEach(System.out::println);
+        manager.getAllTasks().forEach(System.out::println);
+        manager.getAllEpics().forEach(System.out::println);
+        manager.getAllSubtasks().forEach(System.out::println);
 
 
     }
