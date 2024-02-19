@@ -20,10 +20,18 @@ public class Main {
         manager.getAllEpics().forEach(System.out::println);
         manager.getAllSubtasks().forEach(System.out::println);
         System.out.println("=========================================================================================");
-        manager.updateTask(new Task("Уборка", "Убрать квартиру", Status.DONE,1));
-        manager.updateTask(new Task("Магазин", "Купить продукты", Status.DONE,2));
-        manager.updateSubtask(new Subtask("Постирать белое","Постирать белое белье",Status.IN_PROGRESS,5, 4));
-        manager.updateEpic(new Epic("Стирочка","Постирать белье",4));
+        if (!manager.updateTask(new Task("Уборка", "Убрать квартиру", Status.DONE,1))) {
+            System.out.println("Такой задачи нет");
+        }
+        if (!manager.updateTask(new Task("Магазин", "Купить продукты", Status.DONE,12))) {
+            System.out.println("Такой задачи нет");
+        }
+        if (!manager.updateSubtask(new Subtask("Постирать белое","Постирать белое белье",Status.IN_PROGRESS,5, 4))) {
+            System.out.println("Такой подзадачи нет");
+        }
+        if (!manager.updateEpic(new Epic("Стирочка","Постирать белье",8))) {
+            System.out.println("Такого эпика нет");
+        }
         manager.getAllTasks().forEach(System.out::println);
         manager.getAllEpics().forEach(System.out::println);
         manager.getAllSubtasks().forEach(System.out::println);
