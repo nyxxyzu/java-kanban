@@ -55,7 +55,7 @@ public class Task {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Task task = (Task) o;
-		return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status;
+		return id == task.id;
 	}
 
 	@Override
@@ -77,5 +77,13 @@ public class Task {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
