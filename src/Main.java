@@ -41,16 +41,24 @@ public class Main {
         manager.getTask(1);
         manager.getTask(2);
         manager.getTask(1);
-        manager.getTask(2);
-        manager.getTask(1);
-        manager.getTask(2);
         manager.getEpic(4);
         manager.getEpic(4);
+        manager.getSubtask(5);
+        manager.getEpic(3);
+        printAllTasks(manager);
+        System.out.println("=========================================================================================");
         manager.removeTaskById(1);
         manager.removeEpicById(3);
         manager.removeSubtaskById(5);
         printAllTasks(manager);
         System.out.println("=========================================================================================");
+        manager.clearTasks();
+        printAllTasks(manager);
+        System.out.println("=========================================================================================");
+        manager.createTask(task1);
+        manager.getTask(8);
+        printAllTasks(manager);
+
 
     }
     private static void printAllTasks(TaskManager manager) {

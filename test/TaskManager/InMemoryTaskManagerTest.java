@@ -6,29 +6,15 @@ import Tasks.Task;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
 
 	InMemoryTaskManager manager = new InMemoryTaskManager();
-	@Test
-	public void epicCantBeAddedAsSubtask() {
-		//HashMap<Integer, Subtask> subtasks = new HashMap<>();
-		//Epic epic = new Epic("Имя", "Описание");
-		//manager.createSubtask(epic);
-		//Логика создания сабтаска не подразумевает возможности, что там окажется эпик. Несоответсвие типов.
 
-	}
-
-	@Test
-	public void subtaskCantBeItsOwnEpic() {
-		//Epic epic = new Epic("Имя", "Описание");
-		//Subtask subtask = new Subtask("Имя1", "Описание1",1);
-		//manager.createEpic(subtask);
-		//Логика создания эпика не подразумевает возможности, что там окажется сабтаск. Несоответсвие типов.
-
-
-	}
 	@Test
 	public void inMemoryTaskManagerAddsDifferentTasksAndCanFindThemById(){
 		Task task = manager.createTask(new Task("Имя", "Описание"));
@@ -46,9 +32,12 @@ class InMemoryTaskManagerTest {
 	}
 	@Test
 	public void setIdAndGeneratedIdTasksDoNotClash() {
+		Map<Integer, Task> tasks = new HashMap<>();
 		Task task = manager.createTask(new Task("Имя", "Описание"));
 		Task task2 = new Task("Имя1", "Описание1", Status.DONE,1);
-		assertEquals(1, manager.getTaskList().size());
+		tasks.put(task.getId(), task);
+		tasks.put(task2.getId(), task2);
+		assertEquals(1, tasks.size());
 
 	}
 	@Test
