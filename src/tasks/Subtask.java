@@ -1,6 +1,6 @@
-package Tasks;
+package tasks;
 
-import TaskManager.Status;
+import taskmanager.Status;
 
 public class Subtask extends Task {
 

@@ -1,6 +1,6 @@
-package TaskManager;
+package taskmanager;
 
-import Tasks.Task;
+import tasks.Task;
 
 public class Node {
 	public Task data;

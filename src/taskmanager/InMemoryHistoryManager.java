@@ -1,5 +1,5 @@
-package TaskManager;
-import Tasks.Task;
+package taskmanager;
+import tasks.Task;
 import java.util.*;
 
 
