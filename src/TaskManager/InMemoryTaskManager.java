@@ -106,31 +106,25 @@ public class InMemoryTaskManager implements TaskManager {
 	@Override
 	public void clearTasks() {
 		for (Integer key : tasks.keySet()) {
-			Task task = tasks.get(key);
-			getHistory().removeIf(historyTask -> task == historyTask);
+			historyManager.remove(key);
 		}
 		tasks.clear();
-
 	}
 	@Override
 	public void clearEpics() {
 		for (Integer key : epics.keySet()) {
-			Task epic = epics.get(key);
-			getHistory().removeIf(historyTask -> epic == historyTask);
+			historyManager.remove(key);
 		}
 		for (Integer key : subtasks.keySet()) {
-			Task subtask = subtasks.get(key);
-			getHistory().removeIf(historyTask -> subtask == historyTask);
+			historyManager.remove(key);
 		}
-
 		epics.clear();
 		subtasks.clear();
 	}
 	@Override
 	public void clearSubtasks() {
 		for (Integer key : subtasks.keySet()) {
-			Task subtask = subtasks.get(key);
-			getHistory().removeIf(historyTask -> subtask == historyTask);
+			historyManager.remove(key);
 		}
 		subtasks.clear();
 		for (Epic epic : epics.values()) {
@@ -156,16 +150,16 @@ public class InMemoryTaskManager implements TaskManager {
 	}
 	@Override
 	public void removeTaskById(int taskId) {
-		getHistory().removeIf(task -> task == tasks.get(taskId));
+		historyManager.remove(taskId);
 		tasks.remove(taskId);
 
 	}
 	@Override
 	public void removeEpicById(int epicId) {
-		getHistory().removeIf(task -> task == epics.get(epicId));
+		historyManager.remove(epicId);
 		List<Integer> subs = epics.get(epicId).getSubtaskIds();
 		for (Integer sub : subs) {
-			getHistory().removeIf(task -> task == subtasks.get(sub));
+			historyManager.remove(sub);
 			subtasks.remove(sub);
 		}
 		epics.remove(epicId);
@@ -174,7 +168,7 @@ public class InMemoryTaskManager implements TaskManager {
 	}
 	@Override
 	public void removeSubtaskById(int subtaskId) {
-		getHistory().removeIf(task -> task == subtasks.get(subtaskId));
+		historyManager.remove(subtaskId);
 		Epic epic = epics.get(subtasks.get(subtaskId).getEpicId());
 		epic.getSubtaskIds().removeIf(sub -> sub.equals(subtaskId));
 		updateStatus(epic);

@@ -51,5 +51,13 @@ class InMemoryTaskManagerTest {
 
 
 	}
+	@Test
+	public void epicsShouldNotContainIrrelevantSubtaskIds() {
+		Epic epic = manager.createEpic(new Epic ("Имя1","Описание1"));
+		Subtask subtask = manager.createSubtask(new Subtask("Имя2", "Описание2", 1));
+		Subtask subtask2 = manager.createSubtask(new Subtask("Имя3", "Описание3", 1));
+		manager.clearSubtasks();
+		assertEquals(0, epic.getSubtaskIds().size());
 
+	}
 }

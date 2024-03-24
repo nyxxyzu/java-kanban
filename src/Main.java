@@ -33,33 +33,22 @@ public class Main {
         }
         printAllTasks(manager);
         System.out.println("=========================================================================================");
+        manager.getTask(1);
+        manager.getEpic(4);
         manager.getEpic(3);
         manager.getEpic(4);
+        manager.getEpic(3);
         manager.getSubtask(5);
         manager.getSubtask(6);
-        manager.getSubtask(7);
-        manager.getTask(1);
+        manager.getSubtask(5);
         manager.getTask(2);
         manager.getTask(1);
-        manager.getEpic(4);
-        manager.getEpic(4);
-        manager.getSubtask(5);
-        manager.getEpic(3);
         printAllTasks(manager);
         System.out.println("=========================================================================================");
         manager.removeTaskById(1);
         manager.removeEpicById(3);
-        manager.removeSubtaskById(5);
+        manager.clearSubtasks();
         printAllTasks(manager);
-        System.out.println("=========================================================================================");
-        manager.clearTasks();
-        printAllTasks(manager);
-        System.out.println("=========================================================================================");
-        manager.createTask(task1);
-        manager.getTask(8);
-        printAllTasks(manager);
-
-
     }
     private static void printAllTasks(TaskManager manager) {
         System.out.println("Задачи:");
