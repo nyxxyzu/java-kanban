@@ -18,6 +18,7 @@ public class Task {
 		this.status = Status.NEW;
 
 	}
+
 	public Task(String name, String description, Status status) {
 		this.name = name;
 		this.description = description;

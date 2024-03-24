@@ -30,6 +30,7 @@ class InMemoryTaskManagerTest {
 		assertNotNull(getEpic);
 		assertNotNull(getSubtask);
 	}
+
 	@Test
 	public void setIdAndGeneratedIdTasksDoNotClash() {
 		Map<Integer, Task> tasks = new HashMap<>();
@@ -40,6 +41,7 @@ class InMemoryTaskManagerTest {
 		assertEquals(1, tasks.size());
 
 	}
+
 	@Test
 	public void taskDoesNotChangeAfterBeingAddedIntoManager() {
 		Task task = new Task ("Имя", "Описание",Status.NEW, 1);
@@ -51,6 +53,7 @@ class InMemoryTaskManagerTest {
 
 
 	}
+
 	@Test
 	public void epicsShouldNotContainIrrelevantSubtaskIds() {
 		Epic epic = manager.createEpic(new Epic ("Имя1","Описание1"));

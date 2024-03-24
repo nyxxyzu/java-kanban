@@ -19,6 +19,7 @@ class InMemoryHistoryManagerTest {
 		assertEquals(savedTask.getStatus(), historyManager.getHistory().get(0).getStatus());
 		assertEquals(savedTask.getId(), historyManager.getHistory().get(0).getId());
 	}
+
 	@Test
 	public void historyManagerAddAndRemoveWorkCorrectly() {
 		Task task1 = new Task("Имя1", "Описание1", Status.NEW, 1);
