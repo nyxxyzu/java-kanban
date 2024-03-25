@@ -2,20 +2,34 @@ package taskmanager;
 import tasks.Task;
 import java.util.*;
 
-
 public class InMemoryHistoryManager implements HistoryManager {
+
+	static class Node {
+		public Task data;
+		public Node next;
+		public Node prev;
+
+		public Node(Node prev, Task data, Node next) {
+			this.data = data;
+			this.next = next;
+			this.prev = prev;
+		}
+	}
+
 	private Map<Integer, Node> history = new HashMap<>();
 	private Node first;
 	private Node last;
 
 	@Override
 	public void add(Task task) {
-		if (history.containsKey(task.getId())) {
-			linkLast(removeNode(history.get(task.getId())));
-		} else {
-			linkLast(task);
+		if (task != null) {
+			if (history.containsKey(task.getId())) {
+				linkLast(removeNode(history.get(task.getId())));
+			} else {
+				linkLast(task);
+			}
+			history.put(task.getId(), last);
 		}
-		history.put(task.getId(), last);
 	}
 
 	private void linkLast(Task element) {
@@ -45,15 +59,12 @@ public class InMemoryHistoryManager implements HistoryManager {
 			first = next;
 		} else {
 			prev.next = next;
-			node.prev = null;
 		}
 		if (next == null) {
 			last = prev;
 		} else {
 			next.prev = prev;
-			node.next = null;
 		}
-		node.data = null;
 		return element;
 	}
 
