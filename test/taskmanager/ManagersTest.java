@@ -1,6 +1,6 @@
-package TaskManager;
+package taskmanager;
 
-import Tasks.Task;
+import tasks.Task;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -25,6 +25,5 @@ class ManagersTest {
 		assertNotNull(getTask);
 
 	}
-
 
 }

@@ -1,8 +1,8 @@
-package TaskManager;
+package taskmanager;
 
-import Tasks.Epic;
-import Tasks.Subtask;
-import Tasks.Task;
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
 import org.junit.jupiter.api.Test;
 
 
@@ -30,6 +30,7 @@ class InMemoryTaskManagerTest {
 		assertNotNull(getEpic);
 		assertNotNull(getSubtask);
 	}
+
 	@Test
 	public void setIdAndGeneratedIdTasksDoNotClash() {
 		Map<Integer, Task> tasks = new HashMap<>();
@@ -40,6 +41,7 @@ class InMemoryTaskManagerTest {
 		assertEquals(1, tasks.size());
 
 	}
+
 	@Test
 	public void taskDoesNotChangeAfterBeingAddedIntoManager() {
 		Task task = new Task ("Имя", "Описание",Status.NEW, 1);
@@ -52,4 +54,13 @@ class InMemoryTaskManagerTest {
 
 	}
 
+	@Test
+	public void epicsShouldNotContainIrrelevantSubtaskIds() {
+		Epic epic = manager.createEpic(new Epic ("Имя1","Описание1"));
+		Subtask subtask = manager.createSubtask(new Subtask("Имя2", "Описание2", 1));
+		Subtask subtask2 = manager.createSubtask(new Subtask("Имя3", "Описание3", 1));
+		manager.clearSubtasks();
+		assertEquals(0, epic.getSubtaskIds().size());
+
+	}
 }

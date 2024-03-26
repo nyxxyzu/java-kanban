@@ -1,6 +1,6 @@
-package Tasks;
+package tasks;
 
-import TaskManager.Status;
+import taskmanager.Status;
 
 import java.util.Objects;
 
@@ -18,6 +18,7 @@ public class Task {
 		this.status = Status.NEW;
 
 	}
+
 	public Task(String name, String description, Status status) {
 		this.name = name;
 		this.description = description;

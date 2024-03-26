@@ -1,11 +1,10 @@
-package Tasks;
+package tasks;
 
-import TaskManager.Status;
+import taskmanager.Status;
 
 public class Subtask extends Task {
 
 	private int epicId;
-
 
 	public Subtask(String name, String description, int epicId) {
 		super(name, description);
@@ -21,8 +20,13 @@ public class Subtask extends Task {
 		return epicId;
 	}
 
+	public void setEpicId(int epicId) {
+		this.epicId = epicId;
+	}
+
 	@Override
 	public String toString() {
 		return "Tasks.Subtask{} " + super.toString();
+
 	}
 }
