@@ -1,11 +1,14 @@
 package tasks;
 
+import taskmanager.Type;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
 
 	private List<Integer> subtaskIds = new ArrayList<>();
+	Type type = Type.EPIC;
 
 	public Epic(String name, String description) {
 		super(name, description);
@@ -26,9 +29,7 @@ public class Epic extends Task {
 
 	@Override
 	public String toString() {
-		return "Tasks.Epic{" + super.toString() +
-				"subtasks=" + subtaskIds +
-				"} ";
+		return id + "," + type + "," + name + "," + status + "," + description + ",";
 	}
 }
 

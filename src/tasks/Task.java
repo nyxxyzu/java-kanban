@@ -1,14 +1,16 @@
 package tasks;
 
 import taskmanager.Status;
+import taskmanager.Type;
 
 import java.util.Objects;
 
 public class Task {
 
-	private String name;
-	private String description;
-	private Status status;
+	String name;
+	String description;
+	Status status;
+	private Type type = Type.TASK;
 	public int id;
 
 
@@ -43,12 +45,7 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Tasks.Task{" +
-				"name='" + name + '\'' +
-				", description='" + description + '\'' +
-				", status=" + status +
-				", id=" + id +
-				'}';
+		return id + "," + type + "," + name + "," + status + "," + description + ",";
 	}
 
 	@Override
