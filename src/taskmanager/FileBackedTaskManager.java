@@ -172,7 +172,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 				String type = split[1];
 				lastLine = line;
 				if (!line.isEmpty()) {
-					switch(type) {
+					switch (type) {
 						case "EPIC":
 							Epic convertedEpic = (Epic) Converter.fromString(line);
 							newManager.epics.put(convertedEpic.getId(), convertedEpic);
@@ -202,7 +202,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 					maxId = id;
 				}
 			}
-			newManager.setTaskId(maxId+1);
+			newManager.setTaskId(maxId + 1);
 		} catch (IOException exception) {
 			throw new ManagerLoadException("Ошибка при загрузке файла.");
 		}
