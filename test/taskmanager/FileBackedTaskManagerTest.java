@@ -1,5 +1,6 @@
 package taskmanager;
 
+import org.junit.jupiter.api.BeforeEach;
 import tasks.Task;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,12 +12,17 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-class FileBackedTaskManagerTest {
+class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
 
-	File file = File.createTempFile("test","csv");
-	TaskManager manager = new FileBackedTaskManager(file);
+	final File file = File.createTempFile("test","csv");
 
 	public FileBackedTaskManagerTest() throws IOException {
+
+	}
+
+	@BeforeEach
+	void init() {
+		super.init(new FileBackedTaskManager(file));
 	}
 
 	@Test

@@ -230,8 +230,9 @@ public class InMemoryTaskManager implements TaskManager {
 
 	}
 
-
-
+	public void setTaskId(int taskId) {
+		this.taskId = taskId;
+	}
 }
 
 
