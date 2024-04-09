@@ -5,7 +5,6 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -164,7 +163,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 		FileBackedTaskManager newManager = new FileBackedTaskManager(file);
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			String lastLine = "";
-			List<Integer> ids = new ArrayList<>();
 			int maxId = 0;
 			while (reader.ready()) {
 				String line = reader.readLine();
@@ -176,18 +174,24 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 						case "EPIC":
 							Epic convertedEpic = (Epic) Converter.fromString(line);
 							newManager.epics.put(convertedEpic.getId(), convertedEpic);
-							ids.add(convertedEpic.getId());
+							if (convertedEpic.getId() > maxId) {
+								maxId = convertedEpic.getId();
+							}
 							break;
 						case "SUBTASK":
 							Subtask convertedSubtask = (Subtask) Converter.fromString(line);
 							newManager.subtasks.put(convertedSubtask.getId(), convertedSubtask);
 							newManager.epics.get(convertedSubtask.getEpicId()).getSubtaskIds().add(convertedSubtask.getId());
-							ids.add(convertedSubtask.getId());
+							if (convertedSubtask.getId() > maxId) {
+								maxId = convertedSubtask.getId();
+							}
 							break;
 						case "TASK":
 							Task convertedTask = Converter.fromString(line);
 							newManager.tasks.put(convertedTask.getId(), convertedTask);
-							ids.add(convertedTask.getId());
+							if (convertedTask.getId() > maxId) {
+								maxId = convertedTask.getId();
+							}
 							break;
 						case "type":
 							break;
@@ -195,11 +199,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 							List<Integer> historyList = Converter.historyFromString(lastLine);
 							fillHistory(historyList, newManager);
 					}
-				}
-			}
-			for (Integer id : ids) {
-				if (id > maxId) {
-					maxId = id;
 				}
 			}
 			newManager.setTaskId(maxId + 1);
