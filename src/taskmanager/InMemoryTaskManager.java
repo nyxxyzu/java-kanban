@@ -9,10 +9,10 @@ import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
 
-	private Map<Integer, Task> tasks = new HashMap<>();
-	private Map<Integer, Epic> epics = new HashMap<>();
-	private Map<Integer, Subtask> subtasks = new HashMap<>();
-	private HistoryManager historyManager = Managers.getDefaultHistory();
+	Map<Integer, Task> tasks = new HashMap<>();
+	Map<Integer, Epic> epics = new HashMap<>();
+	Map<Integer, Subtask> subtasks = new HashMap<>();
+	HistoryManager historyManager = Managers.getDefaultHistory();
 	private int taskId = 1;
 
 	@Override
@@ -209,7 +209,7 @@ public class InMemoryTaskManager implements TaskManager {
 		}
 	}
 
-	private int incrementId() {
+	public int incrementId() {
 		return taskId++;
 
 	}
@@ -228,6 +228,10 @@ public class InMemoryTaskManager implements TaskManager {
 	public List<Task> getHistory() {
 		return historyManager.getHistory();
 
+	}
+
+	public void setTaskId(int taskId) {
+		this.taskId = taskId;
 	}
 }
 
