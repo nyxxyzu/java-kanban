@@ -277,6 +277,7 @@ public class InMemoryTaskManager implements TaskManager {
 		}
 		epic.setDuration(epicDuration);
 	}
+
 	public Set<Task> getPrioritizedTasks() {
 		TreeSet<Task> sortedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
 		for (Task task : tasks.values()) {
