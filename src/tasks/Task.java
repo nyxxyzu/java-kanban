@@ -3,6 +3,8 @@ package tasks;
 import taskmanager.Status;
 import taskmanager.Type;
 
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
@@ -11,7 +13,11 @@ public class Task {
 	String description;
 	Status status;
 	private Type type = Type.TASK;
-	public int id;
+	int id;
+	Duration duration;
+	ZonedDateTime startTime;
+
+	public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy.HH:mm");
 
 
 	public Task(String name, String description) {
@@ -20,6 +26,16 @@ public class Task {
 		this.status = Status.NEW;
 
 	}
+
+	public Task(String name, String description, long duration, String startTime) {
+		this.name = name;
+		this.description = description;
+		this.status = Status.NEW;
+		this.duration = Duration.ofMinutes(duration);
+		this.startTime = ZonedDateTime.of(LocalDateTime.parse(startTime, TIME_FORMATTER), ZoneId.of("Europe/Moscow"));
+
+	}
+
 
 	public Task(String name, String description, Status status) {
 		this.name = name;
@@ -35,6 +51,15 @@ public class Task {
 		this.id = id;
 	}
 
+	public Task(String name, String description, Status status, int id, long duration, String startTime) {
+		this.name = name;
+		this.description = description;
+		this.status = status;
+		this.id = id;
+		this.duration = Duration.ofMinutes(duration);
+		this.startTime = ZonedDateTime.of(LocalDateTime.parse(startTime, TIME_FORMATTER), ZoneId.of("Europe/Moscow"));
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -45,7 +70,12 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return id + "," + type + "," + name + "," + status + "," + description + ",";
+		if (duration != null && startTime != null && getEndTime() != null) {
+			return id + "," + type + "," + name + "," + status + "," + description + "," + duration.toMinutes() + ","
+					+ startTime.format(TIME_FORMATTER) + "," + getEndTime().format(TIME_FORMATTER) + ",";
+		} else {
+			return id + "," + type + "," + name + "," + status + "," + description + ",";
+		}
 	}
 
 	@Override
@@ -84,4 +114,17 @@ public class Task {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public ZonedDateTime getEndTime() {
+		return startTime.plus(duration);
+	}
+
+	public Duration getDuration() {
+		return duration;
+	}
+
+	public ZonedDateTime getStartTime() {
+		return startTime;
+	}
+
 }
