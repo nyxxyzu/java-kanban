@@ -62,6 +62,9 @@ public class Main {
             System.out.println("Такой задачи не существует или она пересекается по времени.");
         }
         System.out.println(manager.getAllSubtasksByEpic(4));
+        manager.updateSubtask(new Subtask("name","desc",Status.DONE,7,5,30,"25.05.2001.12:00"));
+        manager.removeTaskById(9);
+        System.out.println(manager.getPrioritizedTasks());
 
 
 

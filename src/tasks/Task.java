@@ -9,15 +9,15 @@ import java.util.Objects;
 
 public class Task {
 
-	String name;
-	String description;
-	Status status;
+	protected String name;
+	protected String description;
+	protected Status status;
 	private Type type = Type.TASK;
-	int id;
-	Duration duration;
-	ZonedDateTime startTime;
+	protected int id;
+	protected Duration duration;
+	protected ZonedDateTime startTime;
 
-	public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy.HH:mm");
+	protected static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy.HH:mm");
 
 
 	public Task(String name, String description) {

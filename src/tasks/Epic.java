@@ -12,7 +12,7 @@ import java.util.List;
 public class Epic extends Task {
 
 	private List<Integer> subtaskIds = new ArrayList<>();
-	Type type = Type.EPIC;
+	private Type type = Type.EPIC;
 	private ZonedDateTime endTime;
 
 	public Epic(String name, String description) {
