@@ -19,12 +19,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 	public static void main(String[] args) {
 		FileBackedTaskManager manager = new FileBackedTaskManager(new File("tasks.csv"));
 		manager.createTask(new Task("name1","desc1"));
-		manager.createTask(new Task("name2","desc11"));
+		manager.createTask(new Task("name2","desc11", 60,"26.07.2024.15:00"));
 		manager.createEpic(new Epic("epic1","epic desc1"));
 		manager.createEpic(new Epic("epic2","epic desc2"));
 		manager.createSubtask(new Subtask("sub1", "sub desc1",3));
-		manager.createSubtask(new Subtask("sub2", "sub desc2",4));
-		manager.createSubtask(new Subtask("sub3", "sub desc3",4));
+		manager.createSubtask(new Subtask("sub2", "sub desc2",4,60,"25.05.2023.11:00"));
+		manager.createSubtask(new Subtask("sub3", "sub desc3",4,30,"25.05.2023.12:00"));
+		if (manager.createSubtask(new Subtask("sub2133", "sub desc23",4,20,"26.07.2024.15:50")) == null) {
+			System.out.println("Задача пересекает другую по времени.");
+		}
 		manager.getTask(1);
 		manager.getTask(2);
 		manager.getTask(1);
@@ -32,15 +35,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 		manager.getEpic(4);
 		manager.getEpic(3);
 		TaskManager newManager = loadFromFile(new File("tasks.csv"));
+		newManager.createSubtask(new Subtask("sub4", "sub desc4",4,30,"25.05.2023.12:30"));
+		System.out.println(newManager.getPrioritizedTasks());
 
 		}
 
 	@Override
 	public Task createTask(Task task) {
-		super.createTask(task);
-		save();
-		return task;
-
+		if (super.createTask(task) == task) {
+			save();
+			return task;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -53,32 +60,42 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
 	@Override
 	public Subtask createSubtask(Subtask subtask) {
-		super.createSubtask(subtask);
-		save();
-		return subtask;
-
+		if (super.createSubtask(subtask) == subtask) {
+			save();
+			return subtask;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public boolean updateTask(Task task) {
-		super.updateTask(task);
-		save();
-		return true;
-
+		if (super.updateTask(task)) {
+			save();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public boolean updateEpic(Epic epic) {
-		super.updateEpic(epic);
-		save();
-		return true;
+		if (super.updateEpic(epic)) {
+			save();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public boolean updateSubtask(Subtask subtask) {
-		super.updateSubtask(subtask);
-		save();
-		return true;
+		if (super.updateSubtask(subtask)) {
+			save();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
@@ -143,7 +160,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
 	private void save() {
 		try (Writer fileWriter = new FileWriter(file)) {
-			fileWriter.write("id,type,name,status,description,epic\n");
+			fileWriter.write("id,type,name,status,description,duration,starttime,endtime,epic\n");
 			for (Task task : getAllTasks()) {
 				fileWriter.write(task.toString() + "\n");
 			}

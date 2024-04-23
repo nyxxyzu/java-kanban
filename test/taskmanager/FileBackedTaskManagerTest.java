@@ -15,6 +15,7 @@ import java.util.List;
 class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
 
 	final File file = File.createTempFile("test","csv");
+	final File testFile = new File("test.txt");
 
 	public FileBackedTaskManagerTest() throws IOException {
 
@@ -54,5 +55,12 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
 		assertEquals(task2.toString(),newManager.getTask(2).toString());
 		assertEquals(task3.toString(),newManager.getTask(3).toString());
 
+	}
+
+	@Test
+	void testExceptions() {
+		assertThrows(ManagerLoadException.class, () -> {
+			manager.loadFromFile(testFile);
+		}, "Ошибка при загрузке из несуществующего файла");
 	}
 }
