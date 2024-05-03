@@ -15,11 +15,11 @@ public interface TaskManager {
 
 	Subtask createSubtask(Subtask subtask);
 
-	boolean updateTask(Task task);
+	Task updateTask(Task task);
 
-	boolean updateEpic(Epic epic);
+	Epic updateEpic(Epic epic);
 
-	boolean updateSubtask(Subtask subtask);
+	Subtask updateSubtask(Subtask subtask);
 
 	Task getTask(int taskId);
 
@@ -51,4 +51,5 @@ public interface TaskManager {
 
 	Set<Task> getPrioritizedTasks();
 
+	void setTaskId(int taskId);
 }

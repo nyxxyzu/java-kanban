@@ -1,8 +1,10 @@
 package taskmanager;
 
 import tasks.Epic;
+import tasks.Status;
 import tasks.Subtask;
 import tasks.Task;
+
 
 
 public class Main {
@@ -20,18 +22,6 @@ public class Main {
         Subtask subtask3 = manager.createSubtask(new Subtask("Собрать вещи", "Собрать вещи в дорогу", 4));
         printAllTasks(manager);
         System.out.println("=========================================================================================");
-        if (!manager.updateTask(new Task("Уборка", "Убрать квартиру", Status.DONE,1))) {
-            System.out.println("Такой задачи нет");
-        }
-        if (!manager.updateTask(new Task("Магазин", "Купить продукты", Status.DONE,12))) {
-            System.out.println("Такой задачи нет");
-        }
-        if (!manager.updateSubtask(new Subtask("Постирать белое","Постирать белое белье",Status.IN_PROGRESS,5, 4))) {
-            System.out.println("Такой подзадачи нет");
-        }
-        if (!manager.updateEpic(new Epic("Стирочка","Постирать белье",8))) {
-            System.out.println("Такого эпика нет");
-        }
         printAllTasks(manager);
         System.out.println("=========================================================================================");
         manager.getTask(1);
@@ -50,22 +40,11 @@ public class Main {
         printAllTasks(manager);
         manager.createTask(new Task("name10","desc10",50,"22.03.2005.12:00"));
         manager.createTask(new Task("name11","desc11",50,"22.03.2008.12:00"));
-        System.out.println(manager.getPrioritizedTasks());
-        manager.updateTask(new Task("name1313","desc1313", Status.NEW, 9,40,"24.03.2005.13:37"));
-        if (manager.createTask(new Task("name11","desc11",39,"22.03.2008.12:20")) == null) {
-            System.out.println("Задача пересекает другую по времени");
-        }
-        if (manager.createSubtask(new Subtask("name123123", "dsec123123", 5, 20,"26.07.2024.13:00")) == null) {
-            System.out.println("Задача пересекает другую по времени");
-        }
-        if (!manager.updateTask(new Task("name10","desc10", Status.DONE, 9,50,"22.03.2008.12:49"))) {
-            System.out.println("Такой задачи не существует или она пересекается по времени.");
-        }
-        System.out.println(manager.getAllSubtasksByEpic(4));
-        manager.updateSubtask(new Subtask("name","desc",Status.DONE,7,5,30,"25.05.2001.12:00"));
-        manager.removeTaskById(9);
-        System.out.println(manager.getPrioritizedTasks());
-
+        Task testtask = manager.createTask(new Task("name1","desc1",30,"25.05.2003.12:00"));
+        manager.updateTask(new Task("name1","desc12", Status.DONE,11,20,"25.05.2003.12:00"));
+        System.out.println("=========================================================================================");
+        System.out.println(manager.getTask(11));
+        //printAllTasks(manager);
 
 
     }

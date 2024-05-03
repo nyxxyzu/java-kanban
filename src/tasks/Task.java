@@ -1,8 +1,5 @@
 package tasks;
 
-import taskmanager.Status;
-import taskmanager.Type;
-
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -12,7 +9,7 @@ public class Task {
 	protected String name;
 	protected String description;
 	protected Status status;
-	private Type type = Type.TASK;
+	protected Type type = Type.TASK;
 	protected int id;
 	protected Duration duration;
 	protected ZonedDateTime startTime;
@@ -60,35 +57,16 @@ public class Task {
 		this.startTime = ZonedDateTime.of(LocalDateTime.parse(startTime, TIME_FORMATTER), ZoneId.of("Europe/Moscow"));
 	}
 
+	public Task() {
+		this.status = Status.NEW;
+	}
+
 	public int getId() {
 		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	@Override
-	public String toString() {
-		if (duration != null && startTime != null && getEndTime() != null) {
-			return id + "," + type + "," + name + "," + status + "," + description + "," + duration.toMinutes() + ","
-					+ startTime.format(TIME_FORMATTER) + "," + getEndTime().format(TIME_FORMATTER) + ",";
-		} else {
-			return id + "," + type + "," + name + "," + status + "," + description + ",";
-		}
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Task task = (Task) o;
-		return id == task.id;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(name, description, status, id);
 	}
 
 	public String getDescription() {
@@ -125,6 +103,45 @@ public class Task {
 
 	public ZonedDateTime getStartTime() {
 		return startTime;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public void setDuration(Duration duration) {
+		this.duration = duration;
+	}
+
+	public void setStartTime(ZonedDateTime startTime) {
+		this.startTime = startTime;
+	}
+
+	@Override
+	public String toString() {
+		if (duration != null && startTime != null && getEndTime() != null) {
+			return id + "," + type + "," + name + "," + status + "," + description + "," + duration.toMinutes() + ","
+					+ startTime.format(TIME_FORMATTER) + "," + getEndTime().format(TIME_FORMATTER) + ",";
+		} else {
+			return id + "," + type + "," + name + "," + status + "," + description + ",";
+		}
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Task task = (Task) o;
+		return id == task.id;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, description, status, id);
 	}
 
 }
