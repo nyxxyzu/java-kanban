@@ -6,7 +6,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Epic extends Task {
 
 	private List<Integer> subtaskIds = new ArrayList<>();
