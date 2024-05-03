@@ -1,8 +1,7 @@
 package taskmanager;
 
-import tasks.Epic;
-import tasks.Subtask;
-import tasks.Task;
+import exceptions.NotFoundException;
+import tasks.*;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
@@ -55,37 +54,37 @@ public class InMemoryTaskManager implements TaskManager {
 	}
 
 	@Override
-	public boolean updateTask(Task task) {
+	public Task updateTask(Task task) {
 		if (task.getStartTime() != null && isOverlapping(task)) {
-			return false;
+			return null;
 		} else {
 			if (tasks.containsKey(task.getId())) {
 				tasks.put(task.getId(), task);
 				addTaskToSortedList(task);
-				return true;
+				return task;
 			} else {
-				return false;
+				throw new NotFoundException("Задача не найдена");
 			}
 		}
 	}
 
 	@Override
-	public boolean updateEpic(Epic epic) {
+	public Epic updateEpic(Epic epic) {
 		if (epics.containsKey(epic.getId())) {
 			List<Integer> subtaskIds = epics.get(epic.getId()).getSubtaskIds();
 			epic.setSubtaskIds(subtaskIds);
 			epics.put(epic.getId(), epic);
 			updateEpicStatusTime(epic);
-			return true;
+			return epic;
 		} else {
-			return false;
+			throw new NotFoundException("Эпик не найден");
 		}
 	}
 
 	@Override
-	public boolean updateSubtask(Subtask subtask) {
+	public Subtask updateSubtask(Subtask subtask) {
 		if (subtask.getStartTime() != null && isOverlapping(subtask)) {
-			return false;
+			return null;
 		} else {
 			if (epics.containsKey(subtask.getEpicId())) {
 				if (subtasks.containsKey(subtask.getId())) {
@@ -93,35 +92,44 @@ public class InMemoryTaskManager implements TaskManager {
 					subtasks.put(subtask.getId(), subtask);
 					updateEpicStatusTime(epic);
 					addTaskToSortedList(subtask);
-					return true;
+					return subtask;
 				} else {
-					return false;
+					throw new NotFoundException("Сабтаск не найден");
 				}
 			} else {
-				return false;
+				throw new NotFoundException("Эпик не найден");
 			}
 		}
 	}
 
 	@Override
 	public Task getTask(int taskId) {
-		historyManager.add(tasks.get(taskId));
-		return tasks.get(taskId);
-
+		if (tasks.containsKey(taskId)) {
+			historyManager.add(tasks.get(taskId));
+			return tasks.get(taskId);
+		} else {
+			throw new NotFoundException("Задача не найдена");
+		}
 	}
 
 	@Override
 	public Epic getEpic(int epicId) {
-		historyManager.add(epics.get(epicId));
-		return epics.get(epicId);
-
+		if (epics.containsKey(epicId)) {
+			historyManager.add(epics.get(epicId));
+			return epics.get(epicId);
+		} else {
+			throw new NotFoundException("Эпик не найден");
+		}
 	}
 
 	@Override
 	public Subtask getSubtask(int subtaskId) {
-		historyManager.add(subtasks.get(subtaskId));
-		return subtasks.get(subtaskId);
-
+		if (subtasks.containsKey(subtaskId)) {
+			historyManager.add(subtasks.get(subtaskId));
+			return subtasks.get(subtaskId);
+		} else {
+			throw new NotFoundException("Сабтаск не найден");
+		}
 	}
 
 	@Override
@@ -179,35 +187,42 @@ public class InMemoryTaskManager implements TaskManager {
 
 	@Override
 	public void removeTaskById(int taskId) {
-		historyManager.remove(taskId);
-		tasks.remove(taskId);
-		sortedTasks.removeIf(sortedTask -> sortedTask.getId() == taskId);
-
+		if (tasks.containsKey(taskId)) {
+			historyManager.remove(taskId);
+			tasks.remove(taskId);
+			sortedTasks.removeIf(sortedTask -> sortedTask.getId() == taskId);
+		} else {
+			throw new NotFoundException("Задача не найдена");
+		}
 	}
 
 	@Override
 	public void removeEpicById(int epicId) {
-		historyManager.remove(epicId);
-		List<Integer> subs = epics.get(epicId).getSubtaskIds();
-		for (Integer sub : subs) {
-			historyManager.remove(sub);
-			subtasks.remove(sub);
+		if (epics.containsKey(epicId)) {
+			historyManager.remove(epicId);
+			List<Integer> subs = epics.get(epicId).getSubtaskIds();
+			for (Integer sub : subs) {
+				historyManager.remove(sub);
+				subtasks.remove(sub);
+			}
+			epics.remove(epicId);
+		} else {
+			throw new NotFoundException("Эпик не найден");
 		}
-		epics.remove(epicId);
-
-
 	}
 
 	@Override
 	public void removeSubtaskById(int subtaskId) {
-		historyManager.remove(subtaskId);
-		Epic epic = epics.get(subtasks.get(subtaskId).getEpicId());
-		epic.getSubtaskIds().removeIf(sub -> sub.equals(subtaskId));
-		updateEpicStatusTime(epic);
-		subtasks.remove(subtaskId);
-		sortedTasks.removeIf(sortedTask -> sortedTask.getId() == subtaskId);
-
-
+		if (subtasks.containsKey(subtaskId)) {
+			historyManager.remove(subtaskId);
+			Epic epic = epics.get(subtasks.get(subtaskId).getEpicId());
+			epic.getSubtaskIds().removeIf(sub -> sub.equals(subtaskId));
+			updateEpicStatusTime(epic);
+			subtasks.remove(subtaskId);
+			sortedTasks.removeIf(sortedTask -> sortedTask.getId() == subtaskId);
+		} else {
+			throw new NotFoundException("Сабтаск не найден");
+		}
 	}
 
 	private void updateStatus(Epic epic) {
@@ -242,10 +257,14 @@ public class InMemoryTaskManager implements TaskManager {
 
 	@Override
 	public List<Subtask> getAllSubtasksByEpic(int epicId) {
-		return epics.get(epicId).getSubtaskIds()
-				.stream()
-				.map(subtaskId -> subtasks.get(subtaskId))
-				.toList();
+		if (epics.containsKey(epicId)) {
+			return epics.get(epicId).getSubtaskIds()
+					.stream()
+					.map(subtaskId -> subtasks.get(subtaskId))
+					.toList();
+		} else {
+			throw new NotFoundException("Эпик не найден");
+		}
 	}
 
 	@Override
@@ -291,11 +310,11 @@ public class InMemoryTaskManager implements TaskManager {
 	private boolean isOverlapping(Task task) {
 		return getPrioritizedTasks()
 				.stream()
-				.anyMatch(sortedTask -> sortedTask.getEndTime().isAfter(task.getStartTime())
+				.anyMatch(sortedTask -> !sortedTask.equals(task) && (sortedTask.getEndTime().isAfter(task.getStartTime())
 						&& sortedTask.getStartTime().isBefore(task.getStartTime())
 						|| sortedTask.getStartTime().isBefore(task.getEndTime())
 						&& sortedTask.getStartTime().isAfter(task.getStartTime())
-						|| sortedTask.getStartTime().equals(task.getStartTime()));
+						|| sortedTask.getStartTime().equals(task.getStartTime())));
 
 	}
 
@@ -310,6 +329,8 @@ public class InMemoryTaskManager implements TaskManager {
 			sortedTasks.add(task);
 		}
 	}
+
+
 }
 
 

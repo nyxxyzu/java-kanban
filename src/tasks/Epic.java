@@ -1,7 +1,5 @@
 package tasks;
 
-import taskmanager.Type;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -12,22 +10,32 @@ import java.util.List;
 public class Epic extends Task {
 
 	private List<Integer> subtaskIds = new ArrayList<>();
-	private Type type = Type.EPIC;
+
 	private ZonedDateTime endTime;
 
 	public Epic(String name, String description) {
 		super(name, description);
+		this.type = Type.EPIC;
 	}
 
 	public Epic(String name, String description, int id) {
 		super(name, description);
 		this.id = id;
+		this.status = Status.NEW;
+		this.type = Type.EPIC;
 	}
 
 	public Epic(String name, String description, long duration, String startTime, int id, String endTime) {
 		super(name, description, duration, startTime);
 		this.id = id;
+		this.status = Status.NEW;
+		this.type = Type.EPIC;
 		this.endTime = ZonedDateTime.of(LocalDateTime.parse(endTime, TIME_FORMATTER), ZoneId.of("Europe/Moscow"));
+	}
+
+	public Epic() {
+		this.type = Type.EPIC;
+		this.status = Status.NEW;
 	}
 
 	public List<Integer> getSubtaskIds() {
@@ -48,14 +56,6 @@ public class Epic extends Task {
 		}
 	}
 
-	public void setDuration(Duration duration) {
-		this.duration = duration;
-	}
-
-	public void setStartTime(ZonedDateTime startTime) {
-		this.startTime = startTime;
-	}
-
 	public void setEndTime(ZonedDateTime endTime) {
 		this.endTime = endTime;
 	}
@@ -64,6 +64,7 @@ public class Epic extends Task {
 	public ZonedDateTime getEndTime() {
 		return endTime;
 	}
+
 
 }
 

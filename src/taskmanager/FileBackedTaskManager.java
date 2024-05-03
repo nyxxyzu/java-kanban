@@ -1,5 +1,7 @@
 package taskmanager;
 
+import exceptions.ManagerLoadException;
+import exceptions.ManagerSaveException;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
@@ -69,32 +71,32 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 	}
 
 	@Override
-	public boolean updateTask(Task task) {
-		if (super.updateTask(task)) {
+	public Task updateTask(Task task) {
+		if (super.updateTask(task) != null) {
 			save();
-			return true;
+			return task;
 		} else {
-			return false;
+			return null;
 		}
 	}
 
 	@Override
-	public boolean updateEpic(Epic epic) {
-		if (super.updateEpic(epic)) {
+	public Epic updateEpic(Epic epic) {
+		if (super.updateEpic(epic) != null) {
 			save();
-			return true;
+			return epic;
 		} else {
-			return false;
+			return null;
 		}
 	}
 
 	@Override
-	public boolean updateSubtask(Subtask subtask) {
-		if (super.updateSubtask(subtask)) {
+	public Subtask updateSubtask(Subtask subtask) {
+		if (super.updateSubtask(subtask) != null) {
 			save();
-			return true;
+			return subtask;
 		} else {
-			return false;
+			return null;
 		}
 	}
 
