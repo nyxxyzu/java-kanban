@@ -3,7 +3,6 @@ package handlers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
-import exceptions.NotFoundException;
 import exceptions.ServerErrorException;
 import taskmanager.Managers;
 import taskmanager.TaskManager;
