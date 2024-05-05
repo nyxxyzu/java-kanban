@@ -3,6 +3,8 @@ package handlers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
+import exceptions.NotFoundException;
+import exceptions.ServerErrorException;
 import taskmanager.Managers;
 import taskmanager.TaskManager;
 import typeadapters.DurationAdapter;
@@ -19,38 +21,41 @@ import java.util.Optional;
 public class BaseHttpHandler {
 
 	protected static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-	protected TaskManager manager = Managers.getDefault();
-	Gson gson = new GsonBuilder()
+	protected static TaskManager manager = Managers.getDefault();
+	protected static Gson gson = new GsonBuilder()
 			.registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeAdapter())
 			.registerTypeAdapter(Duration.class, new DurationAdapter())
 			.setPrettyPrinting()
 			.create();
 
-	protected void sendText(HttpExchange exchange, String responseString, int responseCode) throws IOException {
+	public static void sendText(HttpExchange exchange, String responseString, int responseCode) {
 		try (OutputStream os = exchange.getResponseBody()) {
 			exchange.sendResponseHeaders(responseCode, 0);
 			os.write(responseString.getBytes(DEFAULT_CHARSET));
+		} catch (IOException e) {
+			throw new ServerErrorException("Ошибка сервера.");
 		}
-		exchange.close();
 	}
 
-	protected void sendNotFound(HttpExchange exchange) throws IOException {
+	public static void sendNotFound(HttpExchange exchange) {
 		try (OutputStream os = exchange.getResponseBody()) {
 			exchange.sendResponseHeaders(404,0);
 			os.write("Задача не найдена.".getBytes(DEFAULT_CHARSET));
+		} catch (IOException e) {
+			throw new ServerErrorException("Ошибка сервера.");
 		}
-		exchange.close();
 	}
 
-	protected void sendHasOverlaps(HttpExchange exchange) throws IOException {
+	public static void sendHasOverlaps(HttpExchange exchange) {
 		try (OutputStream os = exchange.getResponseBody()) {
 			exchange.sendResponseHeaders(406,0);
 			os.write("Задача пересекается с другой по времени.".getBytes(DEFAULT_CHARSET));
+		} catch (IOException e) {
+			throw new ServerErrorException("Ошибка сервера.");
 		}
-		exchange.close();
 	}
 
-	protected ServerOperation getOperation(String requestMethod) {
+	public static ServerOperation getOperation(String requestMethod) {
 		if (requestMethod.equals("GET")) {
 			return ServerOperation.GET;
 		}
@@ -63,7 +68,7 @@ public class BaseHttpHandler {
 		return ServerOperation.UNKNOWN;
 	}
 
-	protected Optional<Integer> getId(HttpExchange exchange) {
+	public static Optional<Integer> getId(HttpExchange exchange) {
 		String[] pathParts = exchange.getRequestURI().getPath().split("/");
 		try {
 			return Optional.of(Integer.parseInt(pathParts[2]));
