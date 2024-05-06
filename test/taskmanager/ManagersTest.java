@@ -1,5 +1,6 @@
 package taskmanager;
 
+import tasks.Status;
 import tasks.Task;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ class ManagersTest {
 	public void managerCreatorReturnsWorkingManagers() {
 		HistoryManager historyManager = Managers.getDefaultHistory();
 		TaskManager taskManager = Managers.getDefault();
-		Task task = new Task("Test addNewTask", "Test addNewTask description",Status.NEW);
+		Task task = new Task("Test addNewTask", "Test addNewTask description", Status.NEW);
 		int taskId = taskManager.createTask(task).getId();
 		Task getTask = taskManager.getTask(taskId);
 		historyManager.add(task);
